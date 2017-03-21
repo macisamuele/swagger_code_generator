@@ -1,0 +1,11 @@
+coverage
+flake8
+ipdb
+ipython
+mock
+pre-commit
+pytest
+requirements-tools
+sphinx
+sphinx-rtd-theme
+virtualenv

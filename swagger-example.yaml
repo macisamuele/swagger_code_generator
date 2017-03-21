@@ -1,0 +1,132 @@
+swagger: '2.0'
+info:
+  version: 0.0.0
+  title: Simple API
+# TITLE IS VERY IMPORTANT FOR INLINE MODELS!!!
+definitions:
+  VoidModel:
+    type: object
+  ExampleModel1:
+    properties:
+      text:
+        type: string
+      date:
+        type: string
+        format: date
+        x-nullable: true
+      number:
+        type: integer
+        format: int64
+      inline_model_no_title:
+        type: object
+        properties:
+          flag:
+            type: boolean
+        x-title: inline_model_no_title
+      inline_model_title:
+        type: object
+        title: ExampleModel1.InlineModel
+        properties:
+          flag:
+            type: boolean
+      model:
+        $ref: '#/definitions/ExampleModel2'
+      primitive_array:
+        type: array
+        items:
+          type: integer
+      model_array:
+        type: array
+        items:
+          $ref: '#/definitions/VoidModel'
+    required:
+    - text
+    - number
+    type: object
+  ExampleModel2:
+    properties:
+      choices:
+        type: string
+        enum:
+        - val1
+        - val2
+        - val3
+    type: object
+  ExampleModel3:
+    properties:
+      decimal:
+        type: number
+        format: float
+    type: object
+
+paths:
+  /empty:
+    get:
+      responses:
+        200:
+          description: OK
+  /inline_body_no_title:
+    post:
+      parameters:
+      - description: body object
+        in: body
+        name: body
+        required: true
+        schema:
+          properties:
+            text:
+              type: string
+            number:
+              type: integer
+          required:
+          - text
+          type: object
+      responses:
+        200:
+          description: OK
+  /inline_body_yes_title:
+    post:
+      parameters:
+      - description: body object
+        in: body
+        name: body
+        required: true
+        schema:
+          properties:
+            text:
+              type: string
+            number:
+              type: integer
+          required:
+          - text
+          title: InlineBody
+          type: object
+      responses:
+        200:
+          description: OK
+  /body_is_a_reference:
+    post:
+      parameters:
+      - description: body object
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/ExampleModel1'
+      responses:
+        200:
+          description: OK
+  /not_empty_response:
+    get:
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/ExampleModel1'
+  /void_response:
+    get:
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/VoidModel'
